@@ -1,13 +1,16 @@
+// src/addon.ts
+
 import { config } from "../package.json";
 import { ColumnOptions, DialogHelper } from "zotero-plugin-toolkit";
 import hooks from "./hooks";
 import { createZToolkit } from "./utils/ztoolkit";
 
+type ZToolkit = any; // 仮の型
+
 class Addon {
   public data: {
     alive: boolean;
     config: typeof config;
-    // Env type, see build.js
     env: "development" | "production";
     ztoolkit: ZToolkit;
     locale?: {
@@ -19,10 +22,10 @@ class Addon {
       rows: Array<{ [dataKey: string]: string }>;
     };
     dialog?: DialogHelper;
+    activeTabId: string | null;
+    inactivePdfTimers: Map<string, number>; // ★ タイマーIDを管理するMapを追加 (キー: tabId, 値: timerId)
   };
-  // Lifecycle hooks
   public hooks: typeof hooks;
-  // APIs
   public api: object;
 
   constructor() {
@@ -31,9 +34,12 @@ class Addon {
       config,
       env: __env__,
       ztoolkit: createZToolkit(),
+      activeTabId: null,
+      inactivePdfTimers: new Map<string, number>(), // ★ Mapを初期化
     };
     this.hooks = hooks;
     this.api = {};
+    // ... (グローバル登録など)
   }
 }
 

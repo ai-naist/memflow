@@ -1,5 +1,5 @@
-pref-title = Addon Template Example
+pref-title = MemFlow Settings
 pref-enable =
     .label = Enable
-pref-input = Input
+pref-input = Delay
 pref-help = { $name } Build { $version } { $time }
